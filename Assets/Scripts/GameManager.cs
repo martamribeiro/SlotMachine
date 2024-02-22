@@ -14,8 +14,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject slotOne, slotTwo, slotThree;
 
-    public TMP_Text creditsText;
-    public TMP_Text betText;
+    public TMP_Text creditsText, betText, message, additionalInfo;
 
     int credits, bet;
     bool gameStarted = false;
@@ -64,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     public void BetCredits(int number)
     {
-        if (credits > number)
+        if (credits >= number)
         {
             bet = number;
             ChangeBet();
@@ -115,15 +114,27 @@ public class GameManager : MonoBehaviour
         {
             // Three of a kind combination, high payout
             payout = bet*3;
+            message.text = "Three of a kind!";
+            message.color = new Color(253f / 255f, 208f / 255f, 65f / 255f);
+            additionalInfo.text = "+ bet x3";
+            additionalInfo.color = new Color(253f / 255f, 208f / 255f, 65f / 255f);
         }
         else if (IsTwoOfAKind())
         {
             // Two of a kind combination, medium payout
             payout = bet*2;
+            message.text = "Two of a kind!";
+            message.color = new Color(253f / 255f, 208f / 255f, 65f / 255f);
+            additionalInfo.text = "+ bet x2";
+            additionalInfo.color = new Color(253f / 255f, 208f / 255f, 65f / 255f);
         }
         else
         {
             credits = credits - bet;
+            message.text = "You lost!";
+            message.color = new Color(228f / 255f, 59f / 255f, 0f);
+            additionalInfo.text = "no prize";
+            additionalInfo.color = new Color(228f / 255f, 59f / 255f, 0f);
         }
         
         //add more combinations
