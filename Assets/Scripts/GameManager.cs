@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Sprite[] symbols;
 
-    public GameObject slotOne, slotTwo, slotThree;
+    public GameObject slotOne, slotTwo, slotThree, handleButton, handle;
 
     public TMP_Text creditsText, betText, message, additionalInfo;
 
@@ -46,6 +47,14 @@ public class GameManager : MonoBehaviour
             GivePrize();
 
             gameStarted = false;
+
+            // Get the Animator component of the handle game object
+            Animator handleAnimator = handle.GetComponent<Animator>();
+
+            // Set a trigger parameter to stop the animation
+            handleAnimator.SetTrigger("Stop");
+
+            handleButton.SetActive(true);
         }
     }
 
@@ -58,7 +67,6 @@ public class GameManager : MonoBehaviour
     public void ChangeCredits()
     {
         creditsText.text = credits.ToString();
-        Debug.Log("added credits");
     }
 
     public void BetCredits(int number)
@@ -73,18 +81,54 @@ public class GameManager : MonoBehaviour
     public void ChangeBet()
     {
         betText.text = bet.ToString();
-        Debug.Log("changed bet");
     }
 
     public void StartGame()
     {
 
         if (bet > 0) {
-            RandomizeSymbols(symbols);
 
-            gameStarted = true;
+            handleButton.SetActive(false);
+
+            //play animation
+
+            // Get the Animator component of the handle game object
+            Animator handleAnimator = handle.GetComponent<Animator>();
+
+            // Play the animation
+            handleAnimator.SetTrigger("Start");
+
+            StartCoroutine(SpinSlotMachine());
         }
     }
+
+    IEnumerator SpinSlotMachine()
+    {
+        // Wait for 1 second before starting to spin
+        yield return new WaitForSeconds(1f);
+
+        float spinDuration = 3f; // Duration for spinning the slots
+        float elapsedTime = 0f;
+        float symbolChangeInterval = 0.2f; // Delay between each symbol change
+
+        while (elapsedTime < spinDuration)
+        {
+            // Randomize symbols for each slot
+            RandomizeSymbols(symbols);
+
+            // Increment elapsed time
+            elapsedTime += symbolChangeInterval;
+
+            yield return new WaitForSeconds(symbolChangeInterval);
+        }
+
+        // Ensure the slots stop on random symbols after spin duration
+        RandomizeSymbols(symbols);
+
+        // Indicate that the game has started
+        gameStarted = true;
+    }
+
 
     void RandomizeSymbols(Sprite[] symbols)
     {
