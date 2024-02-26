@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text creditsText, betText, message, additionalInfo;
 
+    public AudioSource buttonSound, spinningSound;
+
     int credits, bet;
     bool gameStarted = false;
 
@@ -89,7 +91,15 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpinSlotMachine()
     {
-        float spinDuration = 3f; // Duration for spinning the slots
+        buttonSound.Play();
+        spinningSound.Play();
+
+        message.text = "SPINNING!";
+        message.color = new Color(1f, 1f, 1f, 0.9f);
+        additionalInfo.text = "good luck";
+        additionalInfo.color = new Color(1f, 1f, 1f, 0.9f);
+
+        float spinDuration = 2.5f; // Duration for spinning the slots
         float elapsedTime = 0f;
         float symbolChangeInterval = 0.2f; // Delay between each symbol change
 
@@ -118,18 +128,38 @@ public class GameManager : MonoBehaviour
         SetAlpha(slotTwo, 1);
         SetAlpha(slotThree, 1);
 
-        int randomIndex = Random.Range(0, symbols.Length);
         var image = slotOne.GetComponent<Image>();
-        image.sprite = symbols[randomIndex];
+        image.sprite = symbols[GetSpriteIndex()];
 
-        randomIndex = Random.Range(0, symbols.Length);
         image = slotTwo.GetComponent<Image>();
-        image.sprite = symbols[randomIndex];
+        image.sprite = symbols[GetSpriteIndex()];
 
-        randomIndex = Random.Range(0, symbols.Length);
         image = slotThree.GetComponent<Image>();
-        image.sprite = symbols[randomIndex];
+        image.sprite = symbols[GetSpriteIndex()];
+    }
 
+    int GetSpriteIndex()
+    {
+        int probabilityRange = Random.Range(0, 100);
+        int spriteIndex;
+
+        if (probabilityRange < 5)
+        {
+            //5% chance to get 7
+            spriteIndex = 0;
+        }
+        else if (probabilityRange < 10)
+        {
+            //5% chance to get bar
+            spriteIndex = 1;
+        }
+        else
+        {
+            //90% chance to get fruits
+            spriteIndex = Random.Range(2, symbols.Length);
+        }
+
+        return spriteIndex;
     }
 
     public void GivePrize()
@@ -142,7 +172,7 @@ public class GameManager : MonoBehaviour
             payout = bet * 20;
             message.text = "Three of a kind!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x20";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is three of a kind");
         }
@@ -152,7 +182,7 @@ public class GameManager : MonoBehaviour
             payout = bet * 5;
             message.text = "Two of a kind!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x5";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is two of a kind");
             if (IsOneSeven())
@@ -161,17 +191,17 @@ public class GameManager : MonoBehaviour
                 payout = bet * 15;
                 message.text = "Any two + One 7!";
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                additionalInfo.text = "+ bet x15";
+                additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 Debug.Log("Inside is two of a kind + is one seven");
             }
             else if (IsOneBar())
             {
                 // Two of a kind + One bar combination
-                payout = bet * 10;
+                payout = bet * 15;
                 message.text = "Any two + One Bar!";
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                additionalInfo.text = "+ bet x10";
+                additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 Debug.Log("Inside is two of a kind + is one bar");
             }
@@ -182,7 +212,7 @@ public class GameManager : MonoBehaviour
             payout = bet * 100;
             message.text = "Three 7's!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x100";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is three seven");
         }
@@ -192,16 +222,16 @@ public class GameManager : MonoBehaviour
             payout = bet * 50;
             message.text = "Two 7's!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x50";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is two seven");
             if (IsOneBar())
             {
                 // Two seven + One bar combination
-                payout = bet * 55;
+                payout = bet * 60;
                 message.text = "Two 7's + One Bar!";
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                additionalInfo.text = "+ bet x55";
+                additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 Debug.Log("Inside is two seven and one bar");
             }
@@ -212,7 +242,7 @@ public class GameManager : MonoBehaviour
             payout = bet * 10;
             message.text = "One 7!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x10";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is one seven");
             if (IsTwoBar())
@@ -221,17 +251,17 @@ public class GameManager : MonoBehaviour
                 payout = bet * 35;
                 message.text = "One 7 + Two Bars!";
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                additionalInfo.text = "+ bet x35";
+                additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 Debug.Log("Inside is one seven and two bar");
             }
             else if (IsOneBar())
             {
                 // one seven and one bar combination
-                payout = bet * 15;
+                payout = bet * 20;
                 message.text = "One 7 + One Bar!";
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                additionalInfo.text = "+ bet x15";
+                additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 Debug.Log("Inside is one seven and one bar");
             }
@@ -242,7 +272,7 @@ public class GameManager : MonoBehaviour
             payout = bet * 50;
             message.text = "Three Bars!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x50";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is three bar");
         }
@@ -252,17 +282,17 @@ public class GameManager : MonoBehaviour
             payout = bet * 25;
             message.text = "Two Bars!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x25";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is two bar");
         }
         else if (IsOneBar())
         {
             // One bar combination
-            payout = bet * 5;
+            payout = bet * 10;
             message.text = "One Bar!";
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            additionalInfo.text = "+ bet x5";
+            additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             Debug.Log("Inside is one bar");
         }
@@ -305,11 +335,12 @@ public class GameManager : MonoBehaviour
         var image2 = slotTwo.GetComponent<Image>();
         var image3 = slotThree.GetComponent<Image>();
 
-        return image1.sprite.name != "slot-symbol1" && image1.sprite.name != "slot-symbol4" &&
-            image2.sprite.name != "slot-symbol1" && image2.sprite.name != "slot-symbol4" &&
-           ((image1.sprite == image2.sprite && image1.sprite != image3.sprite) ||
-           (image1.sprite == image3.sprite && image1.sprite != image2.sprite) ||
-           (image2.sprite == image3.sprite && image2.sprite != image1.sprite));
+        return ((image1.sprite.name != "slot-symbol1" && image1.sprite.name != "slot-symbol4" &&  
+            image1.sprite == image2.sprite && image1.sprite != image3.sprite) ||
+           (image1.sprite.name != "slot-symbol1" && image1.sprite.name != "slot-symbol4" &&  
+           image1.sprite == image3.sprite && image1.sprite != image2.sprite) ||
+           (image2.sprite.name != "slot-symbol1" && image2.sprite.name != "slot-symbol4" && 
+           image2.sprite == image3.sprite && image2.sprite != image1.sprite));
     }
 
     bool IsThreeSeven()
