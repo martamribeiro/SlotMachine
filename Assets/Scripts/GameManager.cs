@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -174,7 +173,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is three of a kind");
         }
         else if (IsTwoOfAKind())
         {
@@ -184,7 +182,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is two of a kind");
             if (IsOneSeven())
             {
                 // Two of a kind + One 7 combination
@@ -193,7 +190,6 @@ public class GameManager : MonoBehaviour
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                Debug.Log("Inside is two of a kind + is one seven");
             }
             else if (IsOneBar())
             {
@@ -203,7 +199,6 @@ public class GameManager : MonoBehaviour
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                Debug.Log("Inside is two of a kind + is one bar");
             }
         }
         else if (IsThreeSeven())
@@ -214,7 +209,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is three seven");
         }
         else if (IsTwoSeven())
         {
@@ -224,7 +218,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is two seven");
             if (IsOneBar())
             {
                 // Two seven + One bar combination
@@ -233,7 +226,6 @@ public class GameManager : MonoBehaviour
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                Debug.Log("Inside is two seven and one bar");
             }
         }
         else if (IsOneSeven())
@@ -244,7 +236,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is one seven");
             if (IsTwoBar())
             {
                 // one seven and two bars combination
@@ -253,7 +244,6 @@ public class GameManager : MonoBehaviour
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                Debug.Log("Inside is one seven and two bar");
             }
             else if (IsOneBar())
             {
@@ -263,7 +253,6 @@ public class GameManager : MonoBehaviour
                 message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
                 additionalInfo.text = "+ " + payout;
                 additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-                Debug.Log("Inside is one seven and one bar");
             }
         }
         else if (IsThreeBar())
@@ -274,7 +263,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is three bar");
         }
         else if (IsTwoBar())
         {
@@ -284,7 +272,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is two bar");
         }
         else if (IsOneBar())
         {
@@ -294,7 +281,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
             additionalInfo.text = "+ " + payout;
             additionalInfo.color = new Color(3f / 255f, 152f / 255f, 0f); // Green color for win
-            Debug.Log("Inside is one bar");
         }
         else
         {
@@ -304,7 +290,6 @@ public class GameManager : MonoBehaviour
             message.color = new Color(241f / 255f, 7f / 255f, 0f / 255f); // Red color for loss
             additionalInfo.text = "No prize";
             additionalInfo.color = new Color(241f / 255f, 7f / 255f, 0f / 255f); // Red color for loss
-            Debug.Log("Inside you lost");
         }
 
         credits += payout;
